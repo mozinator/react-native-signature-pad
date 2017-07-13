@@ -14,7 +14,7 @@ import injectedApplication from './injectedJavaScript/application';
 import injectedErrorHandler from './injectedJavaScript/errorHandler';
 import injectedExecuteNativeFunction from './injectedJavaScript/executeNativeFunction';
 
-class SignaturePad extends Component {
+export default class SignaturePad extends Component {
 
   static propTypes = {
     defaultHeight: PropTypes.number,
@@ -130,5 +130,3 @@ class SignaturePad extends Component {
     )
   };
 }
-
-module.exports = SignaturePad;

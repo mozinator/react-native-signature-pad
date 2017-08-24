@@ -48,10 +48,13 @@ export default class SignaturePad extends Component {
   }
 
   _onNavigationChange = (args) => {
+    console.log("_onNavigationChange "+ JSON.stringify(args))
+
     this._parseMessageFromWebViewNavigationChange(unescape(args.url));
   };
 
   _parseMessageFromWebViewNavigationChange = (newUrl) => {
+    console.log("_parseMessageFromWebViewNavigationChange ")
     //Example input:
     //applewebdata://4985ECDA-4C2B-4E37-87ED-0070D14EB985#executeFunction=jsError&arguments=%7B%22message%22:%22ReferenceError:%20Can't%20find%20variable:%20WHADDUP%22,%22url%22:%22applewebdata://4985ECDA-4C2B-4E37-87ED-0070D14EB985%22,%22line%22:340,%22column%22:10%7D"
     //All parameters to the native world are passed via a hash url where every parameter is passed as &[ParameterName]<-[Content]&
@@ -66,7 +69,11 @@ export default class SignaturePad extends Component {
 
     var parameters = {};
     var parameterMatch = regexFindAllSubmittedParameters.exec(hashUrl);
+
+    console.log("_parseMessageFromWebViewNavigationChange hashUrl: "+ hashUrl)
+
     if(!parameterMatch) {
+      console.log("_parseMessageFromWebViewNavigationChange !parameterMatch")
       return;
     }
 
@@ -82,11 +89,14 @@ export default class SignaturePad extends Component {
     }
 
     if(!this._attemptToExecuteNativeFunctionFromWebViewMessage(parameters)) {
+      console.log("_parseMessageFromWebViewNavigationChange Received an unknown set of parameters from WebView" + JSON.stringify({parameters, hashUrl}))
+
       logger.warn({parameters, hashUrl}, 'Received an unknown set of parameters from WebView');
     }
   };
 
   _attemptToExecuteNativeFunctionFromWebViewMessage = (message) => {
+    console.log("_attemptToExecuteNativeFunctionFromWebViewMessage ")
     if(message.executeFunction && message.arguments) {
       var parsedArguments = JSON.parse(message.arguments);
 
@@ -101,19 +111,23 @@ export default class SignaturePad extends Component {
   };
 
   _bridged_jsError = (args) => {
+    console.log("_bridged_jsError")
     this.props.onError({details: args});
   };
 
   _bridged_finishedStroke = ({base64DataUrl}) => {
+    console.log("_bridged_finishedStroke ")
     this.props.onChange({base64DataUrl});
     this.setState({base64DataUrl});
   };
 
   _renderError = (args) => {
+    console.log("_renderError ")
     this.props.onError({details: args});
   };
 
   _renderLoading = (args) => {
+    console.log("_renderLoading")
 
   };
 
